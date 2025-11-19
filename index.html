@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>妙麗歲數計算機</title>
+    <style>
+      /* 全域設定：設定字體與滿版背景 */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          'Helvetica Neue', Arial, sans-serif;
+        /* 背景圖片設定 - 請將這裡的 URL 換成你想要的照片 */
+        background: url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop')
+          no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        align-items: center; /* 垂直置中 */
+        justify-content: flex-end; /* 靠右對齊，模擬截圖中的位置 */
+      }
+
+      /* 為了讓卡片不要貼在最右邊，加一點右邊距 */
+      body {
+        padding-right: 5%;
+      }
+
+      /* 計算機卡片樣式 */
+      .card {
+        background-color: rgba(255, 255, 255, 0.95); /* 白色背景，微透明 */
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        width: 320px;
+        max-width: 90%;
+      }
+
+      /* 標題樣式 */
+      h1 {
+        font-size: 22px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #000;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* 輸入框區域 */
+      .input-group {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #fff;
+      }
+
+      .input-label {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      input[type='date'] {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
+      }
+
+      /* 按鈕樣式 */
+      button {
+        background-color: transparent;
+        color: #333;
+        font-size: 16px;
+        padding: 8px 20px;
+        border: 2px solid #5c7cfa; /* 藍色邊框 */
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+      }
+
+      button:hover {
+        background-color: #5c7cfa;
+        color: white;
+      }
+
+      /* 結果顯示區域 (預設隱藏，計算後顯示) */
+      #result-area {
+        margin-top: 20px;
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 8px;
+        font-size: 15px;
+        line-height: 1.6;
+        color: #333;
+        display: none; /* 一開始隱藏 */
+      }
+
+      .highlight {
+        font-weight: 800;
+        font-size: 18px;
+      }
+
+      /* 手機版調整：置中卡片 */
+      @media (max-width: 600px) {
+        body {
+          justify-content: center;
+          padding-right: 0;
+          align-items: center;
+        }
+        .card {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>🐶 妙麗歲數計算機</h1>
+
+      <div class="input-group">
+        <label class="input-label">狗狗的出生日期：</label>
+        <input
+          type="date"
+          id="birthdate"
+          value="2023-02-28"
+        />
+      </div>
+
+      <button onclick="calculateAge()">開始計算</button>
+
+      <div id="result-area"></div>
+    </div>
+
+    <script>
+      function calculateAge() {
+        // 1. 獲取輸入的日期
+        const inputDate = document.getElementById('birthdate').value;
+        const resultArea = document.getElementById('result-area');
+
+        if (!inputDate) {
+          alert('請選擇日期！');
+          return;
+        }
+
+        // 2. 計算邏輯
+        const birthDateObj = new Date(inputDate);
+        const today = new Date();
+
+        // 計算兩個日期相差的毫秒數
+        const diffTime = today - birthDateObj;
+
+        // 如果出生日期在未來
+        if (diffTime < 0) {
+          resultArea.style.display = 'block';
+          resultArea.innerHTML = '這隻狗狗還沒出生喔！請輸入正確的日期。';
+          return;
+        }
+
+        // 將毫秒轉換為年 (使用 365.25 天作為一年平均值)
+        const ageInYears = diffTime / (1000 * 60 * 60 * 24 * 365.25);
+
+        // 取小數點後一位
+        const dogAge = ageInYears.toFixed(1);
+
+        // 計算人類年齡 (根據圖片中的邏輯，大約是 1:7 的比例)
+        // 2.7 * 7 = 18.9，符合圖片數據
+        const humanAge = (dogAge * 7).toFixed(1);
+
+        // 3. 顯示結果
+        resultArea.style.display = 'block';
+        resultArea.innerHTML = `
+                妙麗現在大約 <span class="highlight">${dogAge}</span> 歲狗年齡，<br>
+                換算成人類年齡大約是 <span class="highlight">${humanAge}</span> 歲。
+            `;
+      }
+    </script>
+  </body>
+</html>
