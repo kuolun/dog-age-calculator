@@ -4,66 +4,86 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>妙麗歲數計算機 (升級版)</title>
+    <!--  放入這三行開始 -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="./icon.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="./icon.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./icon.png"
+    />
+    <!--  放入這三行結束 -->
+    <title>妙麗歲數計算機 (RWD版)</title>
     <style>
-      /* --- 全域與背景設定 --- */
+      /* --- 1. 全域設定 --- */
+      * {
+        box-sizing: border-box; /* 讓寬度包含 padding，避免跑版 */
+      }
+
       body,
       html {
         margin: 0;
         padding: 0;
         width: 100%;
-        height: 100%;
+        /* 使用 min-height 確保高度至少填滿視窗 */
+        min-height: 100vh;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
           Helvetica, Arial, sans-serif;
-        /* 背景圖片增加一點深色遮罩，讓前景卡片更突出 */
-        background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-          url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop')
-            no-repeat center center fixed;
-        background-size: cover;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end; /* 靠右對齊 */
       }
 
       body {
-        padding-right: 8%; /* 增加一點右邊距 */
-        box-sizing: border-box;
+        /* 背景圖片設定 */
+        background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.2)),
+          url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop')
+            no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed; /* 讓背景固定不動，增強質感 */
+
+        /* 排版設定：Flexbox */
+        display: flex;
+        align-items: center; /* 垂直置中 */
+        justify-content: flex-end; /* 預設：電腦版靠右對齊 */
+        padding-right: 10%; /* 電腦版右邊距 */
       }
 
-      /* --- 卡片主體 (毛玻璃風格) --- */
+      /* --- 2. 卡片主體 (毛玻璃特效) --- */
       .card {
-        /* 背景半透明白色 */
-        background: rgba(255, 255, 255, 0.75);
-        /* 毛玻璃模糊效果 (部分舊瀏覽器可能不支援) */
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        /* 邊框與圓角 */
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        border-radius: 24px;
         padding: 35px;
-        /* 柔和的陰影 */
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        width: 340px;
-        max-width: 90%;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+
+        /* 寬度設定 */
+        width: 360px;
+        max-width: 90%; /* 確保手機不破版 */
+
         transition: transform 0.3s ease;
       }
 
-      /* 標題美化 */
+      /* 標題 */
       h1 {
         font-size: 24px;
-        margin-top: 0;
-        margin-bottom: 25px;
+        margin: 0 0 25px 0;
         color: #2c3e50;
         font-weight: 800;
         display: flex;
         align-items: center;
         gap: 10px;
-        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
       }
 
-      /* --- 輸入區塊 --- */
+      /* --- 3. 輸入區塊 --- */
       .input-group {
         margin-bottom: 25px;
       }
@@ -72,79 +92,71 @@
         font-size: 16px;
         color: #444;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
         display: block;
       }
 
       input[type='date'] {
         width: 100%;
-        padding: 12px;
-        font-size: 16px;
+        padding: 14px; /* 加大 Padding 方便手機點擊 */
+        font-size: 16px; /* 16px 是 iOS 防止縮放的最小字體 */
         border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        box-sizing: border-box;
+        border-radius: 12px;
         background-color: rgba(255, 255, 255, 0.9);
-        transition: border-color 0.3s;
         outline: none;
         color: #333;
+        appearance: none; /* 移除 iOS 預設樣式 */
+        -webkit-appearance: none;
       }
 
       input[type='date']:focus {
         border-color: #4facfe;
       }
 
-      /* --- 按鈕美化 (漸層風格) --- */
+      /* --- 4. 按鈕設定 --- */
       button {
         width: 100%;
-        padding: 12px;
+        padding: 14px; /* 加大按鈕 */
         font-size: 18px;
         font-weight: 700;
         color: white;
-        /* 藍色漸層背景 */
         background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
         border: none;
-        border-radius: 10px;
+        border-radius: 12px;
         cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
-        transition: all 0.3s ease;
-      }
-
-      button:hover {
-        /* 滑鼠懸停時上浮並加深陰影 */
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 242, 254, 0.5);
+        box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+        transition: transform 0.2s, box-shadow 0.2s;
+        -webkit-tap-highlight-color: transparent; /* 移除手機點擊藍框 */
       }
 
       button:active {
-        transform: translateY(-1px);
+        transform: scale(0.98); /* 手機點擊時有縮小效果 */
       }
 
-      /* --- 結果顯示區域 --- */
+      /* --- 5. 結果顯示區 --- */
       #result-area {
         margin-top: 25px;
-        background-color: rgba(240, 248, 255, 0.95); /* 非常淡的藍色背景 */
+        background-color: rgba(230, 242, 255, 0.7);
         padding: 20px;
-        border-radius: 12px;
-        /* 左側藍色裝飾條 */
-        border-left: 5px solid #4facfe;
+        border-radius: 16px;
+        border-left: 6px solid #4facfe;
         font-size: 15px;
-        line-height: 1.7;
+        line-height: 1.6;
         color: #333;
-        display: none; /* 預設隱藏 */
-        animation: fadeIn 0.5s ease; /* 加入淡入動畫 */
+        display: none;
+        animation: slideUp 0.5s ease;
       }
 
       .highlight {
         font-weight: 800;
-        font-size: 20px;
+        font-size: 22px;
         color: #0056b3;
       }
 
-      /* 淡入動畫定義 */
-      @keyframes fadeIn {
+      @keyframes slideUp {
         from {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(20px);
         }
         to {
           opacity: 1;
@@ -152,16 +164,37 @@
         }
       }
 
-      /* --- 手機版響應式調整 --- */
+      /* --- 6. RWD 媒體查詢 (關鍵部分) --- */
+
+      /* 當螢幕寬度小於 768px (平板/手機) */
       @media (max-width: 768px) {
         body {
-          justify-content: center;
+          justify-content: center; /* 改為置中對齊 */
           padding-right: 0;
-          align-items: center;
+          padding-left: 0;
+          /* 防止鍵盤彈出時背景壓縮 */
+          background-attachment: scroll;
         }
+
         .card {
-          width: 85%;
-          padding: 25px;
+          width: 85%; /* 稍微縮小寬度佔比 */
+          padding: 30px 25px;
+        }
+      }
+
+      /* 當螢幕寬度小於 480px (小尺寸手機) */
+      @media (max-width: 480px) {
+        .card {
+          width: 92%; /* 讓卡片更寬一點，善用空間 */
+          padding: 25px 20px;
+        }
+
+        h1 {
+          font-size: 20px; /* 標題字體縮小 */
+        }
+
+        .highlight {
+          font-size: 20px;
         }
       }
     </style>
@@ -188,38 +221,32 @@
     </div>
 
     <script>
-      // 定義 LocalStorage 的 Key 名稱，方便管理
-      const STORAGE_KEY_DATE = 'dogCalculator_birthdate';
-      const STORAGE_KEY_RESULT = 'dogCalculator_resultHtml';
+      // 設定 LocalStorage Key
+      const STORAGE_KEY_DATE = 'dogCalculator_v2_date';
+      const STORAGE_KEY_RESULT = 'dogCalculator_v2_result';
 
-      // 頁面載入完成後，執行初始化
       document.addEventListener('DOMContentLoaded', () => {
         loadSavedData();
       });
 
-      // 函數：讀取 LocalStorage 的資料並顯示
       function loadSavedData() {
         const savedDate = localStorage.getItem(STORAGE_KEY_DATE);
         const savedResult = localStorage.getItem(STORAGE_KEY_RESULT);
         const dateInput = document.getElementById('birthdate');
         const resultArea = document.getElementById('result-area');
 
-        // 如果有儲存的日期，幫使用者填上
         if (savedDate) {
           dateInput.value = savedDate;
         } else {
-          // 如果沒有儲存的日期，給一個預設值 (例如你的截圖日期)
           dateInput.value = '2023-02-28';
         }
 
-        // 如果有儲存的結果 HTML，直接顯示出來
         if (savedResult) {
           resultArea.innerHTML = savedResult;
           resultArea.style.display = 'block';
         }
       }
 
-      // 函數：計算年齡並儲存資料 (綁定在按鈕點擊事件)
       function calculateAndSave() {
         const dateInput = document.getElementById('birthdate');
         const resultArea = document.getElementById('result-area');
@@ -230,58 +257,44 @@
           return;
         }
 
-        // --- 1. 計算邏輯 (使用 UCSD 科學公式) ---
+        // --- 計算邏輯 (UCSD 科學公式) ---
         const birthDateObj = new Date(inputDateVal);
         const today = new Date();
         const diffTime = today - birthDateObj;
 
         if (diffTime < 0) {
-          showError(resultArea, '這隻狗狗還沒出生喔！請輸入正確的日期。');
-          clearLocalStorage(); // 日期錯誤時清除舊紀錄
+          resultArea.innerHTML =
+            "<span style='color:red;'>⚠️ 狗狗還沒出生喔！</span>";
+          resultArea.style.display = 'block';
           return;
         }
 
-        // 算出精確歲數
         const exactDogAge = diffTime / (1000 * 60 * 60 * 24 * 365.25);
         const displayDogAge = exactDogAge.toFixed(1);
 
-        // 計算人類年齡
         let humanAge;
         if (exactDogAge < 1) {
-          humanAge = exactDogAge * 15; // 1歲以下按比例
+          humanAge = exactDogAge * 15;
         } else {
-          humanAge = 16 * Math.log(exactDogAge) + 31; // 1歲以上用科學公式
+          humanAge = 16 * Math.log(exactDogAge) + 31;
         }
         const displayHumanAge = humanAge.toFixed(1);
 
-        // --- 2. 產生結果 HTML ---
+        // --- 產生 HTML 結果 ---
         const resultHtml = `
                 妙麗現在大約 <span class="highlight">${displayDogAge}</span> 歲狗年齡，<br>
-                <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 15px 0;">
+                <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 12px 0;">
                 依據 UCSD 科學公式換算，<br>
                 生理狀態相當於人類 <span class="highlight">${displayHumanAge}</span> 歲。<br>
-                <span style="font-size: 12px; color: #888; margin-top: 8px; display:block;">(已自動儲存計算結果)</span>
+                <span style="font-size: 12px; color: #777; margin-top: 8px; display:block;">(已自動儲存結果)</span>
             `;
 
-        // --- 3. 顯示結果並儲存到 LocalStorage ---
+        // --- 顯示並儲存 ---
         resultArea.innerHTML = resultHtml;
         resultArea.style.display = 'block';
 
-        // 儲存日期和結果 HTML
         localStorage.setItem(STORAGE_KEY_DATE, inputDateVal);
         localStorage.setItem(STORAGE_KEY_RESULT, resultHtml);
-      }
-
-      // 輔助函數：顯示錯誤訊息
-      function showError(element, message) {
-        element.innerHTML = `<span style="color: #e74c3c;">⚠️ ${message}</span>`;
-        element.style.display = 'block';
-      }
-
-      // 輔助函數：清除 LocalStorage (當日期無效時使用)
-      function clearLocalStorage() {
-        localStorage.removeItem(STORAGE_KEY_DATE);
-        localStorage.removeItem(STORAGE_KEY_RESULT);
       }
     </script>
   </body>
