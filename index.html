@@ -6,9 +6,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>妙麗歲數計算機</title>
+    <title>妙麗歲數計算機 (升級版)</title>
     <style>
-      /* 全域設定：設定字體與滿版背景 */
+      /* --- 全域與背景設定 --- */
       body,
       html {
         margin: 0;
@@ -16,112 +16,152 @@
         width: 100%;
         height: 100%;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          'Helvetica Neue', Arial, sans-serif;
-        /* 背景圖片設定 - 請將這裡的 URL 換成你想要的照片 */
-        background: url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop')
-          no-repeat center center fixed;
+          Helvetica, Arial, sans-serif;
+        /* 背景圖片增加一點深色遮罩，讓前景卡片更突出 */
+        background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+          url('https://images.unsplash.com/photo-1548199973-03cce0bbc87b?q=80&w=2069&auto=format&fit=crop')
+            no-repeat center center fixed;
         background-size: cover;
         display: flex;
-        align-items: center; /* 垂直置中 */
-        justify-content: flex-end; /* 靠右對齊，模擬截圖中的位置 */
+        align-items: center;
+        justify-content: flex-end; /* 靠右對齊 */
       }
 
-      /* 為了讓卡片不要貼在最右邊，加一點右邊距 */
       body {
-        padding-right: 5%;
+        padding-right: 8%; /* 增加一點右邊距 */
+        box-sizing: border-box;
       }
 
-      /* 計算機卡片樣式 */
+      /* --- 卡片主體 (毛玻璃風格) --- */
       .card {
-        background-color: rgba(255, 255, 255, 0.95); /* 白色背景，微透明 */
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        width: 320px;
+        /* 背景半透明白色 */
+        background: rgba(255, 255, 255, 0.75);
+        /* 毛玻璃模糊效果 (部分舊瀏覽器可能不支援) */
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        /* 邊框與圓角 */
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 35px;
+        /* 柔和的陰影 */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 340px;
         max-width: 90%;
+        transition: transform 0.3s ease;
       }
 
-      /* 標題樣式 */
+      /* 標題美化 */
       h1 {
-        font-size: 22px;
+        font-size: 24px;
         margin-top: 0;
-        margin-bottom: 20px;
-        color: #000;
+        margin-bottom: 25px;
+        color: #2c3e50;
         font-weight: 800;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
       }
 
-      /* 輸入框區域 */
+      /* --- 輸入區塊 --- */
       .input-group {
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        background-color: #fff;
+        margin-bottom: 25px;
       }
 
       .input-label {
         font-size: 16px;
-        color: #333;
-        margin-bottom: 8px;
+        color: #444;
+        font-weight: 600;
+        margin-bottom: 10px;
         display: block;
       }
 
       input[type='date'] {
         width: 100%;
-        padding: 8px;
+        padding: 12px;
         font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background-color: rgba(255, 255, 255, 0.9);
+        transition: border-color 0.3s;
+        outline: none;
+        color: #333;
       }
 
-      /* 按鈕樣式 */
+      input[type='date']:focus {
+        border-color: #4facfe;
+      }
+
+      /* --- 按鈕美化 (漸層風格) --- */
       button {
-        background-color: transparent;
-        color: #333;
-        font-size: 16px;
-        padding: 8px 20px;
-        border: 2px solid #5c7cfa; /* 藍色邊框 */
-        border-radius: 4px;
+        width: 100%;
+        padding: 12px;
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        /* 藍色漸層背景 */
+        background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+        border: none;
+        border-radius: 10px;
         cursor: pointer;
-        transition: all 0.2s;
-        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+        transition: all 0.3s ease;
       }
 
       button:hover {
-        background-color: #5c7cfa;
-        color: white;
+        /* 滑鼠懸停時上浮並加深陰影 */
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 242, 254, 0.5);
       }
 
-      /* 結果顯示區域 (預設隱藏，計算後顯示) */
+      button:active {
+        transform: translateY(-1px);
+      }
+
+      /* --- 結果顯示區域 --- */
       #result-area {
-        margin-top: 20px;
-        background-color: #f5f5f5;
-        padding: 15px;
-        border-radius: 8px;
+        margin-top: 25px;
+        background-color: rgba(240, 248, 255, 0.95); /* 非常淡的藍色背景 */
+        padding: 20px;
+        border-radius: 12px;
+        /* 左側藍色裝飾條 */
+        border-left: 5px solid #4facfe;
         font-size: 15px;
-        line-height: 1.6;
+        line-height: 1.7;
         color: #333;
-        display: none; /* 一開始隱藏 */
+        display: none; /* 預設隱藏 */
+        animation: fadeIn 0.5s ease; /* 加入淡入動畫 */
       }
 
       .highlight {
         font-weight: 800;
-        font-size: 18px;
+        font-size: 20px;
+        color: #0056b3;
       }
 
-      /* 手機版調整：置中卡片 */
-      @media (max-width: 600px) {
+      /* 淡入動畫定義 */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- 手機版響應式調整 --- */
+      @media (max-width: 768px) {
         body {
           justify-content: center;
           padding-right: 0;
           align-items: center;
         }
         .card {
-          width: 90%;
+          width: 85%;
+          padding: 25px;
         }
       }
     </style>
@@ -131,71 +171,117 @@
       <h1>🐶 妙麗歲數計算機</h1>
 
       <div class="input-group">
-        <label class="input-label">狗狗的出生日期：</label>
+        <label
+          class="input-label"
+          for="birthdate"
+          >狗狗的出生日期：</label
+        >
         <input
           type="date"
           id="birthdate"
-          value="2023-02-28"
         />
       </div>
 
-      <button onclick="calculateAge()">開始計算</button>
+      <button onclick="calculateAndSave()">開始計算</button>
 
       <div id="result-area"></div>
     </div>
 
     <script>
-      function calculateAge() {
-        // 1. 獲取輸入的日期
-        const inputDate = document.getElementById('birthdate').value;
+      // 定義 LocalStorage 的 Key 名稱，方便管理
+      const STORAGE_KEY_DATE = 'dogCalculator_birthdate';
+      const STORAGE_KEY_RESULT = 'dogCalculator_resultHtml';
+
+      // 頁面載入完成後，執行初始化
+      document.addEventListener('DOMContentLoaded', () => {
+        loadSavedData();
+      });
+
+      // 函數：讀取 LocalStorage 的資料並顯示
+      function loadSavedData() {
+        const savedDate = localStorage.getItem(STORAGE_KEY_DATE);
+        const savedResult = localStorage.getItem(STORAGE_KEY_RESULT);
+        const dateInput = document.getElementById('birthdate');
         const resultArea = document.getElementById('result-area');
 
-        if (!inputDate) {
+        // 如果有儲存的日期，幫使用者填上
+        if (savedDate) {
+          dateInput.value = savedDate;
+        } else {
+          // 如果沒有儲存的日期，給一個預設值 (例如你的截圖日期)
+          dateInput.value = '2023-02-28';
+        }
+
+        // 如果有儲存的結果 HTML，直接顯示出來
+        if (savedResult) {
+          resultArea.innerHTML = savedResult;
+          resultArea.style.display = 'block';
+        }
+      }
+
+      // 函數：計算年齡並儲存資料 (綁定在按鈕點擊事件)
+      function calculateAndSave() {
+        const dateInput = document.getElementById('birthdate');
+        const resultArea = document.getElementById('result-area');
+        const inputDateVal = dateInput.value;
+
+        if (!inputDateVal) {
           alert('請選擇日期！');
           return;
         }
 
-        // 2. 計算實際年齡 (歲數)
-        const birthDateObj = new Date(inputDate);
+        // --- 1. 計算邏輯 (使用 UCSD 科學公式) ---
+        const birthDateObj = new Date(inputDateVal);
         const today = new Date();
         const diffTime = today - birthDateObj;
 
         if (diffTime < 0) {
-          resultArea.style.display = 'block';
-          resultArea.innerHTML = '這隻狗狗還沒出生喔！請輸入正確的日期。';
+          showError(resultArea, '這隻狗狗還沒出生喔！請輸入正確的日期。');
+          clearLocalStorage(); // 日期錯誤時清除舊紀錄
           return;
         }
 
-        // 算出精確的歲數 (例如 2.54 歲)
+        // 算出精確歲數
         const exactDogAge = diffTime / (1000 * 60 * 60 * 24 * 365.25);
-
-        // 顯示用的狗狗歲數 (取小數點後一位)
         const displayDogAge = exactDogAge.toFixed(1);
 
-        // 3. 計算人類年齡 (使用 UC San Diego 科學公式：16 * ln(age) + 31)
+        // 計算人類年齡
         let humanAge;
-
         if (exactDogAge < 1) {
-          // 針對小於 1 歲的幼犬，科學公式會出現負數或誤差
-          // 這裡我們採用 AVMA 標準：第一年相當於人類 15 歲，按比例計算
-          humanAge = exactDogAge * 15;
+          humanAge = exactDogAge * 15; // 1歲以下按比例
         } else {
-          // 1 歲以上使用科學公式
-          // Math.log() 在 JS 中就是自然對數 ln
-          humanAge = 16 * Math.log(exactDogAge) + 31;
+          humanAge = 16 * Math.log(exactDogAge) + 31; // 1歲以上用科學公式
         }
-
         const displayHumanAge = humanAge.toFixed(1);
 
-        // 4. 顯示結果 (增加了一行說明公式來源)
+        // --- 2. 產生結果 HTML ---
+        const resultHtml = `
+                妙麗現在大約 <span class="highlight">${displayDogAge}</span> 歲狗年齡，<br>
+                <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 15px 0;">
+                依據 UCSD 科學公式換算，<br>
+                生理狀態相當於人類 <span class="highlight">${displayHumanAge}</span> 歲。<br>
+                <span style="font-size: 12px; color: #888; margin-top: 8px; display:block;">(已自動儲存計算結果)</span>
+            `;
+
+        // --- 3. 顯示結果並儲存到 LocalStorage ---
+        resultArea.innerHTML = resultHtml;
         resultArea.style.display = 'block';
-        resultArea.innerHTML = `
-            妙麗現在大約 <span class="highlight">${displayDogAge}</span> 歲狗年齡，<br>
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 10px 0;">
-            依據 UCSD 科學公式換算，<br>
-            生理狀態相當於人類 <span class="highlight">${displayHumanAge}</span> 歲。<br>
-            <span style="font-size: 12px; color: #666;">(採用 2020 年 Cell Systems 期刊發表之表觀遺傳時鐘算法)</span>
-        `;
+
+        // 儲存日期和結果 HTML
+        localStorage.setItem(STORAGE_KEY_DATE, inputDateVal);
+        localStorage.setItem(STORAGE_KEY_RESULT, resultHtml);
+      }
+
+      // 輔助函數：顯示錯誤訊息
+      function showError(element, message) {
+        element.innerHTML = `<span style="color: #e74c3c;">⚠️ ${message}</span>`;
+        element.style.display = 'block';
+      }
+
+      // 輔助函數：清除 LocalStorage (當日期無效時使用)
+      function clearLocalStorage() {
+        localStorage.removeItem(STORAGE_KEY_DATE);
+        localStorage.removeItem(STORAGE_KEY_RESULT);
       }
     </script>
   </body>
